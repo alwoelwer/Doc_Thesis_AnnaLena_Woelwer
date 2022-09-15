@@ -1,5 +1,8 @@
 # PhD_Model_Based_Prediction_Estimation_Incomplete_Survey_Data
-This project contains code for chosen parts of the thesis titled "Model-Based Prediction and Estimation Using Incomplete Survey Data", submitted in partial fulfillment of the requirements for the degree Dr. rer. pol. to the Faculty IV at Trier University by Anna-Lena Wölwer. The thesis is freely available for download under the link (hyperlink download opus XXX).
+This project contains code for chosen parts of the thesis titled "Model-Based Prediction and Estimation Using Incomplete Survey Data", submitted in partial fulfillment of the requirements for the degree Dr. rer. pol. to the Faculty IV at Trier University by Anna-Lena Wölwer. The thesis is freely available for download under the link.
+```diff
+- Add link to Opus
+```
 
 # Structure
 
