@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Anna-Lena Wölwer">
+
+<title>Chapter 6: Multivariate Fay-Herriot model with missing dependent variables (MMFH)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="MMFH_example_files/libs/clipboard/clipboard.min.js"></script>
+<script src="MMFH_example_files/libs/quarto-html/quarto.js"></script>
+<script src="MMFH_example_files/libs/quarto-html/popper.min.js"></script>
+<script src="MMFH_example_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="MMFH_example_files/libs/quarto-html/anchor.min.js"></script>
+<link href="MMFH_example_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="MMFH_example_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="MMFH_example_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="MMFH_example_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="MMFH_example_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Chapter 6: Multivariate Fay-Herriot model with missing dependent variables (MMFH)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Anna-Lena Wölwer </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="description" class="level2">
+<h2 class="anchored" data-anchor-id="description">Description</h2>
+<p>The theoretical basis of the <em>Multivariate Fay-Herriot model with missing dependent variables (MMFH)</em> model and the presented code is given in Chapter 6 of the dissertation <em>Model-Based Prediction and Estimation Using Incomplete Survey Data</em> by <em>Anna-Lena Wölwer</em>, which is available as an open-source document here <em>XXXXX insert OPUS link here</em>.</p>
+<p>This folder contains files <code>MMFH_gen_dat_m3.R</code> and <code>MMFH_fitting.R</code>, both of which contain executable functions which are illustrated in the following. <code>MMFH_gen_dat_m3.R</code> contains functions for generating data according to MMFH models. <code>MMFH_fitting.R</code> contains a function for fitting a MMFH model (parameter estimation, predictions, analytical MSE estimates).</p>
+</section>
+<section id="libraries" class="level2">
+<h2 class="anchored" data-anchor-id="libraries">Libraries</h2>
+<p>For the examples, we use the following libraries.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Matrix)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mvtnorm)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sae)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Lade nötiges Paket: MASS</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Lade nötiges Paket: lme4</code></pre>
+</div>
+</div>
+</section>
+<section id="short-overview-of-the-r-codes-in-this-folder" class="level2">
+<h2 class="anchored" data-anchor-id="short-overview-of-the-r-codes-in-this-folder">Short overview of the R codes in this folder</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">paste0</span>(<span class="fu">getwd</span>(), <span class="st">"/MMFH_gen_dat_m3.R"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The file comes with two functions for generating data according to a MMFH model with <span class="math inline">\(m=3\)</span> dependent variables (therefore the <em>_m3</em> in the name). The code contains comments on the inputs of the functions.</p>
+<p>Function <code>f_prep_MMFH_m3</code> is used to generate all quantities which are typically considered to be fixed in model-based small area simulation studies like the matrix of auxiliary information. For a simulation study, we would execute this function only once. The function takes as input all parameters of a multivariate Fay-Herriot model like the fixed effects, the variance components, and the number of domains.</p>
+<p>Function <code>f_gen_MMFH_m3</code> is used to generate all quantities which are typically considered random in model-based small area simulation studies like the random effects and sampling errors. For a simulation study, we would execute this function in each Monte Carlo iteration. The function takes as input all quantities generated by function <code>f_prep_MMFH_m3</code> as well as the inputs of <code>f_prep_MMFH_m3</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">paste0</span>(<span class="fu">getwd</span>(), <span class="st">"/MMFH_fitting.R"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The file contains function <code>f_MMFH</code>. The code contains comments on the inputs of the function.</p>
+<p>Function <code>f_MMFH</code> is used to fit a MMFH model to input data. This includes the estimation of the model fixed effects (<span class="math inline">\(\beta\)</span>) and variance components (<span class="math inline">\(\theta\)</span>) via Fisher-Scoring, either based on maximum likelihood (ML) or restricted maximum likelihood (REML). Furthermore, based on the parameter estimates, the model returns estimates of the random effects, the synthetic predictions (<span class="math inline">\(X \beta\)</span>) and the EBPs. In addition, the MSE estimates are given.</p>
+<p>Although in this file we only cover the case of <span class="math inline">\(m=3\)</span> dependent variables, function <code>f_MMFH</code> works for an arbitrary number of <span class="math inline">\(m\geq 2\)</span> dependent variables.</p>
+</section>
+<section id="generate-example-data" class="level2">
+<h2 class="anchored" data-anchor-id="generate-example-data">Generate example data</h2>
+<p>Generate the fixed quantities of a MMFH model including randomly generated auxiliary information (documentation of required inputs in <code>MMFH_gen_dat_m3.R</code>).</p>
+<p>Set input quantities</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="dv">3</span> <span class="co"># total number of variables of interest, number of dependent variables</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>D <span class="ot">=</span> <span class="dv">100</span> <span class="co"># total number of domains</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>v_ref <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>) <span class="co"># variances of random effects of the 3 variables</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>cor_ref <span class="ot">=</span> <span class="fu">c</span>(.<span class="dv">2</span>,.<span class="dv">3</span>,.<span class="dv">4</span>) <span class="co"># correlations of random effects</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>v_rer <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">2.5</span>,<span class="fl">3.5</span>,<span class="fl">4.5</span>) <span class="co"># variances of sampling errors of the 3 variables</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>cor_rer <span class="ot">=</span> <span class="fu">c</span>(.<span class="dv">15</span>,.<span class="dv">25</span>,.<span class="dv">35</span>) <span class="co"># correlations of sampling errors</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">=</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="fl">1.5</span>, <span class="fl">2.5</span>), <span class="co"># list, for each variable: vector of fixed effects</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(<span class="fl">2.3</span>,<span class="fl">3.3</span>,<span class="fl">4.3</span>),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(<span class="fl">4.1</span>,<span class="fl">3.1</span>,<span class="fl">2.1</span>, <span class="fl">2.2</span>))</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>range_aux <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">100</span>) <span class="co"># range of the uniform distribution from which auxiliary information is sampled from</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>perc_mis <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">2</span>) <span class="co"># percentage of missing domain information per variable</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Generate data</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>d_fix <span class="ot">&lt;-</span> <span class="fu">f_prep_MMFH_m3</span>(<span class="at">seed =</span> <span class="dv">56</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(d_fix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "m"         "D"         "v_ref"     "cor_ref"   "v_rer"     "cor_rer"  
+ [7] "beta"      "range_aux" "seed"      "m"         "V_ed"      "V_ud"     
+[13] "x"        </code></pre>
+</div>
+</div>
+<p>Use <code>f_gen_MMFH_m3</code> to generate the model information which typically varies between Monte Carlo iterations. That is, the generation of the dependent variables. The function allows to set certain values as missing, input <code>perc_mis</code> determines the number of domains for which the survey information of the three dependent variables is missing. Note that in this code the missing dependent variables are non-overlapping. That is, there is maximum one missing dependent variable per domain. This, however, can easily be changed in the code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>d_var <span class="ot">&lt;-</span> <span class="fu">f_gen_MMFH_m3</span>( <span class="at">x =</span> d_fix<span class="sc">$</span>x,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">beta =</span> d_fix<span class="sc">$</span>beta,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">V_ud =</span> d_fix<span class="sc">$</span>V_ud,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">V_ed =</span> d_fix<span class="sc">$</span>V_ed,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">seed =</span> <span class="dv">67</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">verbose =</span> <span class="cn">TRUE</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Generated number of missing y values (non-overlapping over the 100 domains) for the three dependent variables is 5 5 0 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(d_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 3
+ $ y_true: num [1:100, 1:3] 156.9 64.6 93.8 74.9 127.7 ...
+ $ y_obs : num [1:100, 1:3] 156.9 63.7 93 76.6 129.9 ...
+ $ y_mis : num [1:100, 1:3] NA NA NA NA NA ...</code></pre>
+</div>
+</div>
+<p><code>y_true</code> are the (according to the model) true values of the dependent variables, <code>y_obs</code> are the survey estimates of the dependent variables, <code>y_mis</code> are the survey estimates, which we consider to be available, some of which are missing (determined by <code>perc_mis</code> in <code>f_gen_MMFH_m3</code>). The missing mechanism is <em>missing completely at random</em> (MCAR).</p>
+<p>Have a look at the generated dependent variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>d_plot <span class="ot">&lt;-</span> reshape2<span class="sc">::</span><span class="fu">melt</span>(d_var<span class="sc">$</span>y_mis)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>d_plot<span class="sc">$</span>Var2 <span class="ot">&lt;-</span> <span class="fu">factor</span>(d_plot<span class="sc">$</span>Var2)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(d_plot) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"domain"</span>, <span class="st">"variable"</span>, <span class="st">"value"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(d_plot,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                <span class="fu">aes</span>(<span class="at">x =</span> domain, <span class="at">y =</span> value, <span class="at">group =</span> variable, </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">color =</span> variable, <span class="at">fill =</span> variable, </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">shape =</span> variable, <span class="at">lty =</span> variable)) <span class="sc">+</span> </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 5 row(s) containing missing values (geom_path).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 10 rows containing missing values (geom_point).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="MMFH_example_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(d_plot,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                <span class="fu">aes</span>(<span class="at">x =</span> variable, <span class="at">y =</span> value,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">fill =</span> variable)) <span class="sc">+</span> </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> .<span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">pch =</span> <span class="dv">21</span>, <span class="at">alpha =</span> .<span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 10 rows containing non-finite values (stat_boxplot).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 10 rows containing missing values (geom_point).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="MMFH_example_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>From the error message, you can see that there are (as we wanted) missing values in the dependent variables. Furthermore, you can play around with the parameters of the data generation and see how the outcomes of the sampling estimates change.</p>
+<p>The number of domains with missing values of variables 1, 2, and 3 is</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(d_var<span class="sc">$</span>y_mis))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5 5 0</code></pre>
+</div>
+</div>
+</section>
+<section id="function-f_mmfh" class="level2">
+<h2 class="anchored" data-anchor-id="function-f_mmfh">Function f_MMFH</h2>
+<p>Set some of the function inputs.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>method <span class="ot">&lt;-</span> <span class="st">"REML"</span> <span class="co"># REML or ML in Fisher-Scoring</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># method &lt;- "ML"</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>verbose <span class="ot">&lt;-</span> <span class="cn">TRUE</span> <span class="co"># print intermediate outputs</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>eps <span class="ot">&lt;-</span> <span class="fl">1e-8</span> <span class="co"># convergence tolerance</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>maxiter <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># maximum number of iterations of Fisher-Socring</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Fit a MMFH model to survey estimates <code>d_var$y_mis</code> (documentation of required input in <code>MMFH_fitting.R</code>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>res_MMFH <span class="ot">&lt;-</span> <span class="fu">f_MMFH</span>(<span class="at">y           =</span> d_var<span class="sc">$</span>y_mis,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">x           =</span> d_fix<span class="sc">$</span>x,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">V_ed        =</span> d_fix<span class="sc">$</span>V_ed,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">theta       =</span> <span class="cn">NULL</span>, </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">theta_start =</span> <span class="cn">NULL</span>, </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">method      =</span> method, </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">eps         =</span> eps, </span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">maxiter     =</span> maxiter, </span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">verbose     =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> iter            loglike lambda  var_1  var_2  var_3 rho_12 rho_13 rho_23  v1.x1  v1.x2  v2.x1  v2.x2  v2.x3  v3.x1  v3.x2  v3.x3  v3.x4 
+    0           -424.233     NA  1.942  1.844  4.278  0.066 -0.017 -0.005  1.134  2.504  2.611  3.295  4.297  3.169  3.114  2.113  2.189 
+    1           -421.623      1  1.953  1.837  4.266  0.039  0.344  0.338  1.342  2.501  2.629  3.293  4.298  3.041  3.114  2.116  2.190 
+    2           -421.590      1  1.991  1.827  4.239  0.073  0.383  0.315  1.368  2.500  2.624  3.293  4.298  3.003  3.114  2.116  2.190 
+    3           -421.589      1  1.999  1.828  4.241  0.074  0.390  0.315  1.373  2.500  2.624  3.293  4.298  2.998  3.114  2.116  2.190 
+    4           -421.589      1  2.000  1.828  4.241  0.075  0.391  0.315  1.374  2.500  2.624  3.293  4.298  2.997  3.114  2.116  2.190 
+    5           -421.589      1  2.000  1.828  4.241  0.075  0.391  0.315  1.374  2.500  2.624  3.293  4.298  2.997  3.114  2.116  2.190 
+    6           -421.589      1  2.000  1.828  4.241  0.075  0.391  0.315  1.374  2.500  2.624  3.293  4.298  2.997  3.114  2.116  2.190 
+    7           -421.589      1  2.000  1.828  4.241  0.075  0.391  0.315  1.374  2.500  2.624  3.293  4.298  2.997  3.114  2.116  2.190 
+    8           -421.589      1  2.000  1.828  4.241  0.075  0.391  0.315  1.374  2.500  2.624  3.293  4.298  2.997  3.114  2.116  2.190 
+    9           -421.589      1  2.000  1.828  4.241  0.075  0.391  0.315  1.374  2.500  2.624  3.293  4.298  2.997  3.114  2.116  2.190 
+   10           -421.589      1  2.000  1.828  4.241  0.075  0.391  0.315  1.374  2.500  2.624  3.293  4.298  2.997  3.114  2.116  2.190 
+   11           -421.589      1  2.000  1.828  4.241  0.075  0.391  0.315  1.374  2.500  2.624  3.293  4.298  2.997  3.114  2.116  2.190 
+   12           -421.589      1  2.000  1.828  4.241  0.075  0.391  0.315  1.374  2.500  2.624  3.293  4.298  2.997  3.114  2.116  2.190 </code></pre>
+</div>
+</div>
+<p>With <code>verbose = TRUE</code>, the model returns the intermediate parameter estimates.</p>
+<p>See the model output.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(res_MMFH)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 2
+ $ est:List of 4
+  ..$ ebp  : num [1:100, 1:3] 155.2 64.8 94.6 77.6 126.8 ...
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr [1:100] "1" "2" "3" "4" ...
+  .. .. ..$ : chr [1:3] "v1" "v2" "v3"
+  ..$ ref  : num [1:100, 1:3] -0.139 -0.185 0.851 0.56 0.654 ...
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr [1:100] "1" "2" "3" "4" ...
+  .. .. ..$ : chr [1:3] "v1" "v2" "v3"
+  ..$ Xbeta: num [1:100, 1:3] 155.3 65 93.7 77 126.2 ...
+  .. ..- attr(*, "dimnames")=List of 2
+  .. .. ..$ : chr [1:100] "1" "2" "3" "4" ...
+  .. .. ..$ : chr [1:3] "v1" "v2" "v3"
+  ..$ fit  :List of 6
+  .. ..$ method    : chr "REML"
+  .. ..$ covergence: logi TRUE
+  .. ..$ iterations: num 12
+  .. ..$ estcoef   :'data.frame':   9 obs. of  4 variables:
+  .. .. ..$ beta     : num [1:9] 1.37 2.5 2.62 3.29 4.3 ...
+  .. .. ..$ std_error: num [1:9] 0.50281 0.00816 0.69947 0.00869 0.00892 ...
+  .. .. ..$ tvalue   : num [1:9] 2.73 306.43 3.75 379.02 481.7 ...
+  .. .. ..$ pvalue   : num [1:9] 0.006289 0 0.000176 0 0 ...
+  .. ..$ refvar    : Named num [1:6] 2 1.8284 4.2411 0.0751 0.391 ...
+  .. .. ..- attr(*, "names")= chr [1:6] "var_1" "var_2" "var_3" "rho_12" ...
+  .. ..$ goodness  : Named num -422
+  .. .. ..- attr(*, "names")= chr "ll"
+ $ mse: num [1:100, 1:6] 1.91 2.02 2.42 2.13 2.26 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr [1:100] "1" "2" "3" "4" ...
+  .. ..$ : chr [1:6] "v1" "cov12" "cov13" "v2" ...</code></pre>
+</div>
+</div>
+<p>The function returns the parameters estimates, EBPs, predictions of random effects, synthetic predictions, and MSE estimates.</p>
+</section>
+<section id="compare-mmfh-fitting-algorithm-to-saeeblupfh-for-univariate-fh-models" class="level2">
+<h2 class="anchored" data-anchor-id="compare-mmfh-fitting-algorithm-to-saeeblupfh-for-univariate-fh-models">Compare MMFH fitting algorithm to sae::eblupFH (for univariate FH models)</h2>
+<p>We make an example to compare the MMFH output to the output of a (univariate) Fay-Herriot model using function <code>sae::mseFH</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate (univariate) Fay-Herriot models with function mseFH from the sae package</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>res_FH <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  a_tmp <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(d_var<span class="sc">$</span>y_mis[,k]))</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  res_FH[[k]] <span class="ot">&lt;-</span> sae<span class="sc">::</span><span class="fu">mseFH</span>(d_var<span class="sc">$</span>y_mis[,k][a_tmp] <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">+</span> d_fix<span class="sc">$</span>x[[k]][a_tmp,],</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">vardir =</span> <span class="fu">sapply</span>(d_fix<span class="sc">$</span>V_ed[a_tmp], <span class="cf">function</span> (d){ d[k,k] }),</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>                            <span class="at">method =</span> method,</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>                            <span class="at">PRECISION =</span> eps,</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>                            <span class="at">MAXITER =</span> maxiter)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For illustration, we choose variable 1.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For variable 1: Get FH results</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>k <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>a_tmp <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(d_var<span class="sc">$</span>y_mis[,k]))</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>eblup_tmp <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, D)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>mse_tmp <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, D)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>eblup_tmp[<span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(d_var<span class="sc">$</span>y_mis[,k]))] <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(res_FH[[k]]<span class="sc">$</span>est<span class="sc">$</span>eblup) </span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>mse_tmp[<span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(d_var<span class="sc">$</span>y_mis[,k]))] <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(res_FH[[k]]<span class="sc">$</span>mse) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Compare the EBPs:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="st">"true"</span> <span class="ot">=</span> d_var<span class="sc">$</span>y_true[,k],</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>      <span class="st">"FH_EBLUP"</span> <span class="ot">=</span> eblup_tmp,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>      <span class="st">"FH_SYN"</span> <span class="ot">=</span> <span class="fu">as.vector</span>(d_fix<span class="sc">$</span>x[[k]] <span class="sc">%*%</span> res_FH[[k]]<span class="sc">$</span>est<span class="sc">$</span>fit<span class="sc">$</span>estcoef[,<span class="dv">1</span>]),</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">"MMFH"</span> <span class="ot">=</span> res_MMFH<span class="sc">$</span>est<span class="sc">$</span>ebp[,k])[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        true  FH_EBLUP    FH_SYN      MMFH
+1  156.85232        NA 155.31150 155.16325
+2   64.57212        NA  64.72493  64.78255
+3   93.77198        NA  93.55037  94.56381
+4   74.91269        NA  76.78266  77.55163
+5  127.66611        NA 126.11205 126.83853
+6  201.78221 202.72005 202.87303 202.54761
+7   31.04123  31.59915  31.79145  31.67832
+8  226.82361 226.41626 224.74097 226.35804
+9  223.20246 222.95375 223.19108 222.83941
+10 184.65795 183.94654 182.76495 183.87278</code></pre>
+</div>
+</div>
+<p>Exemplary for the first 10 domains, you can see the true values of the dependent variables in the first column. Furthermore, column 2 shows the FH EBLUPs (<em>FH_EBLUP</em>). For domains 1 to 5, the survey estimates were considered missing. Therefore, the FH model cannot be used to calculated EBLUPs and only return synthetic predictions <em>FH_SYN</em>. In addition, column 4 gives the EBPs of the MMFH model. With the MMFH model, we can calculate EBPs also for the domains with missing values of variable 1 as the model uses the correlations of the variable to variables 2 and 3 in a multivariate model.</p>
+<p>Compare the MSE estimates:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="st">"FH"</span> <span class="ot">=</span> mse_tmp,</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>      <span class="st">"MMFH"</span> <span class="ot">=</span> res_MMFH<span class="sc">$</span>mse[,<span class="st">"v1"</span>])[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         FH     MMFH
+1        NA 1.910992
+2        NA 2.016465
+3        NA 2.416007
+4        NA 2.127238
+5        NA 2.264326
+6  1.181287 1.161754
+7  1.210119 1.202400
+8  1.193080 1.358293
+9  1.192129 1.142456
+10 1.173540 1.237934</code></pre>
+</div>
+</div>
+<p>Also for the MSE, only the MMFH model can give estimates for domains 1 to 5, for whcih the survey direct estimates are considered missing.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
