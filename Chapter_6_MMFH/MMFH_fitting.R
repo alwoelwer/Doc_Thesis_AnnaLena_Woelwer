@@ -218,16 +218,16 @@ f_MMFH <- function(y,
 
   ### completely missing observations in y are omitted
 
-  obs.comp.mis <- rownames(y)[rowSums(is.na(y)) == dim(y)[2]]
-  if (!identical(obs.comp.mis, character(0))) {
+  obs_comb_mis <- rownames(y)[rowSums(is.na(y)) == dim(y)[2]]
+  if (!identical(obs_comb_mis, character(0))) {
     warning("There were 1:D with no direct estimate in any variable of interest.
  These 1:D are excluded from the estimation.")
-    y <- y[!rownames(y) %in% obs.comp.mis, ]
+    y <- y[!rownames(y) %in% obs_comb_mis, ]
     x <- lapply(x, function(x_k) {
-      x_k <- x_k[!rownames(x_k) %in% obs.comp.mis, ]
+      x_k <- x_k[!rownames(x_k) %in% obs_comb_mis, ]
       x_k
     })
-    V_ed <- V_ed[!names(V_ed) %in% obs.comp.mis]
+    V_ed <- V_ed[!names(V_ed) %in% obs_comb_mis]
   }
 
 

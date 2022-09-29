@@ -69,23 +69,24 @@ if (FALSE) {
 }
 
 
-# Function for preparation of MMFH data generation ----
+# Function for preparation of MFH data generation ----
 # ______________________________________________________________________________
 
-f_prep_MMFH_m3 <- function(D = 100,
-                           v_ref = c(2, 3, 4),
-                           cor_ref = c(.2, .3, .4),
-                           v_rer = c(2.5, 3.5, 4.5),
-                           cor_rer = c(.15, .25, .35),
-                           beta = list(
-                             c(1.5, 2.5),
-                             c(2.3, 3.3, 4.3),
-                             c(4.1, 3.1, 2.1, 2.2)
-                           ),
-                           range_aux = c(10, 100),
-                           seed = 56) {
+f_prep_MFH_m3 <- function(D = 100,
+                          v_ref = c(2, 3, 4),
+                          cor_ref = c(.2, .3, .4),
+                          v_rer = c(2.5, 3.5, 4.5),
+                          cor_rer = c(.15, .25, .35),
+                          beta = list(
+                            c(1.5, 2.5),
+                            c(2.3, 3.3, 4.3),
+                            c(4.1, 3.1, 2.1, 2.2)
+                          ),
+                          range_aux = c(10, 100),
+                          seed = 56) {
 
-  # The function prepares the data generation of a MMFH model
+  # The function prepares the data generation of a 
+  # multivariate Fay-Herriot (MFH) model with m=3 dependent variables.
   # It generates all quantities which are typically assumed fixed for a small
   # area simulation, like the matrix of auxiliary information x
 
@@ -266,7 +267,7 @@ f_prep_MMFH_m3 <- function(D = 100,
 ###
 
 if (FALSE) {
-  out_test <- f_prep_MMFH_m3(
+  out_test <- f_prep_MFH_m3(
     D = 100,
     v_ref = c(2, 3, 4),
     cor_ref = c(.2, .3, .4),
@@ -284,25 +285,24 @@ if (FALSE) {
 }
 
 
-# Function for MMFH data generation ----
+# Function for MFH data generation ----
 # ______________________________________________________________________________
 
-f_gen_MMFH_m3 <- function(D = 100,
-                          x = x,
-                          beta = list(
-                            c(1.5, 2.5),
-                            c(2.3, 3.3, 4.3),
-                            c(4.1, 3.1, 2.1, 2.2)
-                          ),
-                          V_ud = V_ud,
-                          V_ed = V_ed,
-                          seed = 67,
-                          verbose = TRUE,
-                          return = "2") {
-  # This function generates data according to a MMFH model with missing
-  # dependent variables (MCAR)
+f_gen_MFH_m3 <- function(D = 100,
+                         x = x,
+                         beta = list(
+                           c(1.5, 2.5),
+                           c(2.3, 3.3, 4.3),
+                           c(4.1, 3.1, 2.1, 2.2)
+                         ),
+                         V_ud = V_ud,
+                         V_ed = V_ed,
+                         seed = 67,
+                         verbose = TRUE) {
+  # This function generates data according to a 
+  # multivariate Fay-Herriot (MFH) model with m=3 dependent variables.
   # Before applying this function, the information which is typically considered
-  # fixed in a small area simulation study, can be generated via f_prep_MMFH_m3
+  # fixed in a small area simulation study, can be generated via f_prep_MFH_m3
 
 
   ###
@@ -334,12 +334,6 @@ f_gen_MMFH_m3 <- function(D = 100,
   #
   # verbose
   #  logical. Whether information of data generation is to be returned
-  #
-  # return
-  #  return = "1" returns all output including the list of sampling error
-  #  covariance matrices where the positions of missing dependent variables are
-  #  filled by NA,
-  #  return = "2" only returns the generated dependent variables
 
   m <- 3 # number of dependent variables
 
@@ -427,7 +421,7 @@ f_gen_MMFH_m3 <- function(D = 100,
 ###
 
 if (FALSE) {
-  out_prep_test <- f_prep_MMFH_m3(
+  out_prep_test <- f_prep_MFH_m3(
     D = 100,
     v_ref = c(2, 3, 4),
     cor_ref = c(.2, .3, .4),
@@ -442,8 +436,9 @@ if (FALSE) {
     seed = 56
   )
   str(out_prep_test)
+  names(out_prep_test)
 
-  out_test <- f_gen_MMFH_m3(
+  out_test <- f_gen_MFH_m3(
     D = out_prep_test$D,
     x = out_prep_test$x,
     beta = out_prep_test$beta,

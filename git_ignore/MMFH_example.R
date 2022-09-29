@@ -106,6 +106,16 @@ res_MMFH <- f_MMFH(y       = d_var$y_mis,
                    verbose = verbose)
 
 
+res_MMFH_dt <- f_MMFH_dt(
+  y = d_var$y_mis,
+  x = d_fix$x,
+  V_ed = d_fix$V_ed,
+  method = method,
+  eps = eps,
+  maxiter = maxiter,
+  verbose = verbose
+)
+
 
 
 # Compare MMFH fitting algorithm with sae::eblupFH for univariate FH models ----

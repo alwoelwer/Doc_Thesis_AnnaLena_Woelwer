@@ -68,6 +68,7 @@ f_MMFH <- function(y,
 
   library(sae)
   library(Matrix)
+  library(data.table)
 
 
   # Check input ----

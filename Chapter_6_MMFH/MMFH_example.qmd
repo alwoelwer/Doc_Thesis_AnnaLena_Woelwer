@@ -26,7 +26,8 @@ library(sae)
 ## Short overview of the R codes in this folder
 
 ```{r}
-source(paste0(getwd(), "/MMFH_gen_dat_m3.R"))
+source(paste0(getwd(), "/Chapter_6_MMFH/MMFH_gen_dat_m3.R"))
+source(paste0(getwd(), "/Chapter_6_MMFH/MMFH_fitting.R"))
 ```
 
 The file comes with two functions for generating data according to a MMFH model with $m=3$ dependent variables (therefore the *\_m3* in the name). The code contains comments on the inputs of the functions.
@@ -187,10 +188,11 @@ mse_tmp[which(!is.na(d_var$y_mis[,k]))] <- as.vector(res_FH[[k]]$mse)
 Compare the EBPs:
 
 ```{r}
-cbind("true" = d_var$y_true[,k],
-      "FH_EBLUP" = eblup_tmp,
-      "FH_SYN" = as.vector(d_fix$x[[k]] %*% res_FH[[k]]$est$fit$estcoef[,1]),
-      "MMFH" = res_MMFH$est$ebp[,k])[1:10,]
+dat_comb <- cbind("true" = d_var$y_true[,k],
+                  "FH_EBLUP" = eblup_tmp,
+                  "FH_SYN" = as.vector(d_fix$x[[k]] %*% res_FH[[k]]$est$fit$estcoef[,1]),
+                  "MMFH" = res_MMFH$est$ebp[,k])
+dat_comb[1:10,]
 ```
 
 Exemplary for the first 10 domains, you can see the true values of the dependent variables in the first column. Furthermore, column 2 shows the FH EBLUPs (*FH_EBLUP*). For domains 1 to 5, the survey estimates were considered missing. Therefore, the FH model cannot be used to calculated EBLUPs and only return synthetic predictions *FH_SYN*. In addition, column 4 gives the EBPs of the MMFH model. With the MMFH model, we can calculate EBPs also for the domains with missing values of variable 1 as the model uses the correlations of the variable to variables 2 and 3 in a multivariate model.

@@ -209,8 +209,8 @@ Generated number of missing y values (non-overlapping over the 100 domains) for 
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(d_var)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>List of 3
- $ y_true: num [1:100, 1:3] 87.3 180 71.1 184.2 112 ...
- $ y_obs : num [1:100, 1:3] 87.4 179.1 70.4 185.9 114.2 ...
+ $ y_true: num [1:100, 1:3] 214.8 205.4 49.3 228.2 111.9 ...
+ $ y_obs : num [1:100, 1:3] 214.8 204.5 48.5 229.9 114.1 ...
  $ y_mis : num [1:100, 1:3] NA NA NA NA NA ...</code></pre>
 </div>
 </div>
@@ -286,16 +286,16 @@ Generated number of missing y values (non-overlapping over the 100 domains) for 
 <span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">verbose     =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> iter            loglike lambda  var_1  var_2  var_3 rho_12 rho_13 rho_23  v1.x1  v1.x2  v2.x1  v2.x2  v2.x3  v3.x1  v3.x2  v3.x3  v3.x4 
-    0           -425.105     NA  1.977  1.824  4.362  0.138 -0.136  0.039  1.295  2.502  1.913  3.297  4.309  2.460  3.104  2.110  2.216 
-    1           -421.540      1  1.978  1.815  4.355  0.047  0.302  0.422  1.255  2.503  1.860  3.296  4.310  2.307  3.107  2.110  2.216 
-    2           -421.524      1  1.998  1.800  4.326  0.080  0.316  0.402  1.249  2.503  1.866  3.296  4.310  2.321  3.107  2.109  2.216 
-    3           -421.524      1  1.999  1.801  4.327  0.080  0.318  0.402  1.249  2.503  1.865  3.296  4.310  2.320  3.107  2.109  2.216 
-    4           -421.524      1  2.000  1.801  4.327  0.080  0.318  0.402  1.249  2.503  1.865  3.296  4.310  2.320  3.107  2.109  2.216 
-    5           -421.524      1  2.000  1.801  4.327  0.080  0.318  0.402  1.249  2.503  1.865  3.296  4.310  2.320  3.107  2.109  2.216 
-    6           -421.524      1  2.000  1.801  4.327  0.080  0.318  0.402  1.249  2.503  1.865  3.296  4.310  2.320  3.107  2.109  2.216 
-    7           -421.524      1  2.000  1.801  4.327  0.080  0.318  0.402  1.249  2.503  1.865  3.296  4.310  2.320  3.107  2.109  2.216 
-    8           -421.524      1  2.000  1.801  4.327  0.080  0.318  0.402  1.249  2.503  1.865  3.296  4.310  2.320  3.107  2.109  2.216 
-    9           -421.524      1  2.000  1.801  4.327  0.080  0.318  0.402  1.249  2.503  1.865  3.296  4.310  2.320  3.107  2.109  2.216 </code></pre>
+    0           -423.031     NA  1.948  1.781  3.944 -0.126 -0.041 -0.173  0.975  2.507  1.897  3.294  4.311  5.838  3.093  2.075  2.200 
+    1           -419.552      1  1.951  1.781  3.941  0.085  0.272  0.386  0.966  2.508  1.915  3.291  4.313  5.615  3.094  2.078  2.200 
+    2           -419.549      1  1.961  1.778  3.932  0.102  0.283  0.379  0.967  2.508  1.915  3.291  4.313  5.616  3.094  2.078  2.200 
+    3           -419.549      1  1.962  1.778  3.932  0.101  0.283  0.379  0.967  2.508  1.915  3.291  4.313  5.616  3.094  2.078  2.200 
+    4           -419.549      1  1.962  1.778  3.932  0.101  0.283  0.379  0.967  2.508  1.915  3.291  4.313  5.616  3.094  2.078  2.200 
+    5           -419.549      1  1.962  1.778  3.932  0.101  0.283  0.379  0.967  2.508  1.915  3.291  4.313  5.616  3.094  2.078  2.200 
+    6           -419.549      1  1.962  1.778  3.932  0.101  0.283  0.379  0.967  2.508  1.915  3.291  4.313  5.616  3.094  2.078  2.200 
+    7           -419.549      1  1.962  1.778  3.932  0.101  0.283  0.379  0.967  2.508  1.915  3.291  4.313  5.616  3.094  2.078  2.200 
+    8           -419.549      1  1.962  1.778  3.932  0.101  0.283  0.379  0.967  2.508  1.915  3.291  4.313  5.616  3.094  2.078  2.200 
+    9           -419.549      1  1.962  1.778  3.932  0.101  0.283  0.379  0.967  2.508  1.915  3.291  4.313  5.616  3.094  2.078  2.200 </code></pre>
 </div>
 </div>
 <p>With <code>verbose = TRUE</code>, the model returns the intermediate parameter estimates.</p>
@@ -305,15 +305,15 @@ Generated number of missing y values (non-overlapping over the 100 domains) for 
 <div class="cell-output cell-output-stdout">
 <pre><code>List of 2
  $ est:List of 4
-  ..$ ebp  : num [1:100, 1:3] 85.8 180.4 71.6 186.9 111 ...
+  ..$ ebp  : num [1:100, 1:3] 213.4 205.9 49.5 231 110.8 ...
   .. ..- attr(*, "dimnames")=List of 2
   .. .. ..$ : chr [1:100] "1" "2" "3" "4" ...
   .. .. ..$ : chr [1:3] "v1" "v2" "v3"
-  ..$ ref  : num [1:100, 1:3] 0.0288 -0.0538 0.5903 0.557 0.5365 ...
+  ..$ ref  : num [1:100, 1:3] -0.0434 -0.0471 0.4856 0.3725 0.549 ...
   .. ..- attr(*, "dimnames")=List of 2
   .. .. ..$ : chr [1:100] "1" "2" "3" "4" ...
   .. .. ..$ : chr [1:3] "v1" "v2" "v3"
-  ..$ Xbeta: num [1:100, 1:3] 85.7 180.5 71 186.3 110.5 ...
+  ..$ Xbeta: num [1:100, 1:3] 213 206 49 231 110 ...
   .. ..- attr(*, "dimnames")=List of 2
   .. .. ..$ : chr [1:100] "1" "2" "3" "4" ...
   .. .. ..$ : chr [1:3] "v1" "v2" "v3"
@@ -322,15 +322,15 @@ Generated number of missing y values (non-overlapping over the 100 domains) for 
   .. ..$ covergence: logi TRUE
   .. ..$ iterations: num 9
   .. ..$ estcoef   :'data.frame':   9 obs. of  4 variables:
-  .. .. ..$ beta     : num [1:9] 1.25 2.5 1.87 3.3 4.31 ...
-  .. .. ..$ std_error: num [1:9] 0.45498 0.0078 0.68231 0.00872 0.00853 ...
-  .. .. ..$ tvalue   : num [1:9] 2.74 320.81 2.73 378.01 505.24 ...
-  .. .. ..$ pvalue   : num [1:9] 0.00606 0 0.00626 0 0 ...
-  .. ..$ refvar    : Named num [1:6] 1.9996 1.8013 4.327 0.0797 0.318 ...
+  .. .. ..$ beta     : num [1:9] 0.967 2.508 1.915 3.291 4.313 ...
+  .. .. ..$ std_error: num [1:9] 0.51585 0.00833 0.7056 0.00859 0.00866 ...
+  .. .. ..$ tvalue   : num [1:9] 1.87 300.89 2.71 383.17 497.88 ...
+  .. .. ..$ pvalue   : num [1:9] 0.06086 0 0.00664 0 0 ...
+  .. ..$ refvar    : Named num [1:6] 1.962 1.778 3.932 0.101 0.283 ...
   .. .. ..- attr(*, "names")= chr [1:6] "var_1" "var_2" "var_3" "rho_12" ...
-  .. ..$ goodness  : Named num -422
+  .. ..$ goodness  : Named num -420
   .. .. ..- attr(*, "names")= chr "ll"
- $ mse: num [1:100, 1:6] 1.97 2 2.35 2.27 2.31 ...
+ $ mse: num [1:100, 1:6] 2.01 2 2.37 2.23 2.38 ...
   ..- attr(*, "dimnames")=List of 2
   .. ..$ : chr [1:100] "1" "2" "3" "4" ...
   .. ..$ : chr [1:6] "v1" "cov12" "cov13" "v2" ...</code></pre>
@@ -370,17 +370,17 @@ Generated number of missing y values (non-overlapping over the 100 domains) for 
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>      <span class="st">"FH_SYN"</span> <span class="ot">=</span> <span class="fu">as.vector</span>(d_fix<span class="sc">$</span>x[[k]] <span class="sc">%*%</span> res_FH[[k]]<span class="sc">$</span>est<span class="sc">$</span>fit<span class="sc">$</span>estcoef[,<span class="dv">1</span>]),</span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">"MMFH"</span> <span class="ot">=</span> res_MMFH<span class="sc">$</span>est<span class="sc">$</span>ebp[,k])[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        true  FH_EBLUP    FH_SYN      MMFH
-1   87.32681        NA  85.73625  85.75435
-2  180.02367        NA 180.40439 180.43541
-3   71.12993        NA  71.03731  71.60208
-4  184.19065        NA 186.25403 186.90172
-5  111.98607        NA 110.47099 111.02171
-6  166.34539 167.18227 167.25820 167.16889
-7  236.85486 237.59619 237.93701 237.62771
-8  188.13251 187.60838 185.81035 187.68927
-9   58.63271  58.24088  58.36935  58.22956
-10 158.61222 157.84543 156.59861 157.83819</code></pre>
+<pre><code>        true FH_EBLUP    FH_SYN     MMFH
+1  214.75240       NA 213.36042 213.3687
+2  205.38100       NA 205.92764 205.9299
+3   49.30952       NA  48.97448  49.4600
+4  228.22847       NA 230.52326 230.9529
+5  111.86762       NA 110.27004 110.8383
+6  116.55268 117.3503 117.39460 117.3294
+7  220.63436 221.4917 221.91785 221.4960
+8  134.78204 134.2245 132.42703 134.2628
+9  104.90703 104.4651 104.55271 104.4765
+10 217.81413 217.1473 215.99676 217.1589</code></pre>
 </div>
 </div>
 <p>Exemplary for the first 10 domains, you can see the true values of the dependent variables in the first column. Furthermore, column 2 shows the FH EBLUPs (<em>FH_EBLUP</em>). For domains 1 to 5, the survey estimates were considered missing. Therefore, the FH model cannot be used to calculated EBLUPs and only return synthetic predictions <em>FH_SYN</em>. In addition, column 4 gives the EBPs of the MMFH model. With the MMFH model, we can calculate EBPs also for the domains with missing values of variable 1 as the model uses the correlations of the variable to variables 2 and 3 in a multivariate model.</p>
@@ -390,16 +390,16 @@ Generated number of missing y values (non-overlapping over the 100 domains) for 
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>      <span class="st">"MMFH"</span> <span class="ot">=</span> res_MMFH<span class="sc">$</span>mse[,<span class="st">"v1"</span>])[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         FH     MMFH
-1        NA 1.965718
-2        NA 1.996844
-3        NA 2.350032
-4        NA 2.272001
-5        NA 2.311390
-6  1.182066 1.159816
-7  1.215727 1.193092
-8  1.187753 1.345877
-9  1.193869 1.140965
-10 1.179812 1.257760</code></pre>
+1        NA 2.005135
+2        NA 2.003442
+3        NA 2.372117
+4        NA 2.225638
+5        NA 2.383327
+6  1.170953 1.166090
+7  1.192718 1.177602
+8  1.169050 1.348913
+9  1.173918 1.119032
+10 1.189301 1.247603</code></pre>
 </div>
 </div>
 <p>Also for the MSE, only the MMFH model can give estimates for domains 1 to 5, for whcih the survey direct estimates are considered missing.</p>
