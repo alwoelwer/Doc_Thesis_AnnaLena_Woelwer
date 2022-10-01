@@ -40,7 +40,7 @@ names(d_fix)
 d_var <- f_gen_MFH_m3(
   x = d_fix$x,
   beta = d_fix$beta,
-  V_ud_est = d_fix$V_ud_est,
+  V_ud = d_fix$V_ud,
   V_ed = d_fix$V_ed,
   seed = 67,
   verbose = TRUE
@@ -58,7 +58,6 @@ res_MFH <- f_MMFH(
 
 # From the model results: calculate certain quantities
 
-# Calculate X beta
 x_bdiag <- do.call(
   "rbind",
   lapply(1:D, function(d) {
@@ -80,90 +79,107 @@ V_ud_est <- f_Cov(theta = res_MFH$est$fit$refvar)
 # Integration: Rate (y1/(y1+y2)) ----
 # ____________________________________________________________________________
 
- ### Preparation Gauss-Hermite
+### Preparation Gauss-Hermite
 
-  # Choose the number of function evaluations per dimension
-  # Product rule: Choosing gauss_n = 5 results in a total of 25 function
-  # evaluations
-  gauss_n <- 10
+# Choose the number of function evaluations per dimension
+# Product rule: Choosing gauss_n = 5 results in a total of 25 function
+# evaluations
+gauss_n <- 10
 
-  # Get the corresponding points and weights
-  w_tmp <- GH_weights[[gauss_n]]
+# Get the corresponding points and weights
+w_tmp <- GH_weights[[gauss_n]]
 
-  # product rule: Set up the grid of points and weights
-  idx <- as.matrix(expand.grid(rep(list(1:gauss_n), m)))
-  pts <- matrix(w_tmp[idx, 1], nrow(idx), m)
-  wts <- apply(matrix(w_tmp[idx, 2], nrow(idx), m), 1, prod)
-  # scale and recenter the weights and nodes to the specific distribution
-  wts <- wts * (pi^{
-    -m / 2
-  })
-  pts <- sqrt(2) * pts
+# product rule: Set up the grid of points and weights
+idx <- as.matrix(expand.grid(rep(list(1:gauss_n), m)))
+pts <- matrix(w_tmp[idx, 1], nrow(idx), m)
+wts <- apply(matrix(w_tmp[idx, 2], nrow(idx), m), 1, prod)
+# scale and recenter the weights and nodes to the specific distribution
+wts <- wts * (pi^{
+  -m / 2
+})
+pts <- sqrt(2) * pts
 
 
 ### Different integral approximations
 
 set.seed(648)
+res_approx <- list()
 res_int <- sapply(1:D, function(d) {
-
-### Calculate domain-specific quantities
-
-V_d_inv <- solve(V_ud_est + V_ed[[d]])
-
+  
+  
+  ### Calculate domain-specific quantities
+  
+  V_d_inv <- solve(V_ud_est + V_ed[[d]])
+  
   # Calculate the conditional mean
   mu_ebp <- V_ud_est %*% V_d_inv %*% as.vector(residuals[d, ])
-
+warnng("Passt das mit den Residuen? Sollten die nicht mit den EBPs sein?")
+  
   # Calculate the decomposition of the conditional covariance matrix
   # and ensure it is symmetric
   V_u_V_inv_V_e <- V_ud_est %*% V_d_inv %*% V_ed[[d]]
   V_u_V_inv_V_e[1, 2] <- V_u_V_inv_V_e[2, 1]
-
+  
   V_u_V_inv_V_e_eig <- eigen(V_u_V_inv_V_e, symmetric = TRUE)
   V_u_V_inv_V_e_eigen_rot <- (V_u_V_inv_V_e_eig$vectors %*% diag(sqrt(V_u_V_inv_V_e_eig$values)))
-
-### Gauss-Hermite
-
-# Adjust points for specific distribution
+  
+  
+  ### Approximation: Plug-in
+  
+  res_approx[["Plug-in"]] <- res_MFH$est$ebp[d, 1] / 
+    (res_MFH$est$ebp[d, 1] + res_MFH$est$ebp[d, 2])
+  
+  
+  ### Approximation: Gauss-Hermite with product rule
+  
+  # Adjust points for specific distribution
   pts_distr <- t(V_u_V_inv_V_e_eigen_rot %*% t(pts))
   pts_distr <- sweep(pts_distr, 2, mu_ebp, "+")
-
+  
   # Calculate the approximation of the rate
-  res_GH <- sum(apply(pts_distr, 1, function(x) {
+  res_approx[["GH"]] <- sum(apply(pts_distr, 1, function(x) {
     (x_beta_est[d, ][1] + x[1]) /
       (x_beta_est[d, ][1] + x[1] + x_beta_est[d, ][2] + x[2])
   }) * wts)
-
-
-### Monte Carlo (without antithetic variate)
-
-
-# draw random effects
-u_tmp <- rmvnorm_rebuilt(n = gauss_n^2, mean = u_bv_BLUP, sigma = V.u_V_inv_V.e)
-# apply to original variable (i.e. u) (no antithetic variable)
-sgl_MC_values_tmp <- sapply(c(1),
-  # s = -1
-  function(s) {
-    apply(
-      u_tmp, 1,
-      #       function (x) {
-      #  (Xbeta[1] + x[1]) / ( (Xbeta[1] + x[1]) + (Xbeta[2] + x[2]) )
-      # }
-      f_to_eval_for_f_u_given_y
-    )
-  },
-  simplify = "array"
-)
-rm(u_tmp)
-R_MC_Int_2_wtAntit <- sapply(
-  MC_variants,
-  # MC_i <- 10
-  # MC_i <- MC_variants[1]
-  function(MC_i) {
-    c(mean(sgl_MC_values_tmp[1:(MC_i), ]))
-  }
-)
-
-
+  
+  
+  ### Approximation: Monte Carlo (without antithetic variate)
+  
+  # draw random effects
+  u_tmp <- rmvnorm_rebuilt(n = gauss_n^2, mean = u_bv_BLUP, sigma = V.u_V_inv_V.e)
+  # apply to original variable (i.e. u) (no antithetic variable)
+  sgl_MC_values_tmp <- sapply(c(1),
+                              # s = -1
+                              function(s) {
+                                apply(
+                                  u_tmp, 1,
+                                  #       function (x) {
+                                  #  (Xbeta[1] + x[1]) / ( (Xbeta[1] + x[1]) + (Xbeta[2] + x[2]) )
+                                  # }
+                                  f_to_eval_for_f_u_given_y
+                                )
+                              },
+                              simplify = "array"
+  )
+  rm(u_tmp)
+  R_MC_Int_2_wtAntit <- sapply(
+    MC_variants,
+    # MC_i <- 10
+    # MC_i <- MC_variants[1]
+    function(MC_i) {
+      c(mean(sgl_MC_values_tmp[1:(MC_i), ]))
+    }
+  )
+  
+  
+  ### Approximation: Monte Carlo (without antithetic variate)
+  
+  
+  ### Approximation: Quasi-random numbers: Sobol sequence
+  
+  
+  ### Approximation: Quasi-random numbers: Halton sequence
+  
 })
 
 
@@ -181,17 +197,17 @@ V_u_V_inv_V_e <- V_u %*% V_inv %*% V_e
 u_tmp <- rmvnorm_rebuilt(n = gauss_n^2, mean = u_bv_BLUP, sigma = V.u_V_inv_V.e)
 # apply to original variable (i.e. u) (no antithetic variable)
 sgl_MC_values_tmp <- sapply(c(1),
-  # s = -1
-  function(s) {
-    apply(
-      u_tmp, 1,
-      #       function (x) {
-      #  (Xbeta[1] + x[1]) / ( (Xbeta[1] + x[1]) + (Xbeta[2] + x[2]) )
-      # }
-      f_to_eval_for_f_u_given_y
-    )
-  },
-  simplify = "array"
+                            # s = -1
+                            function(s) {
+                              apply(
+                                u_tmp, 1,
+                                #       function (x) {
+                                #  (Xbeta[1] + x[1]) / ( (Xbeta[1] + x[1]) + (Xbeta[2] + x[2]) )
+                                # }
+                                f_to_eval_for_f_u_given_y
+                              )
+                            },
+                            simplify = "array"
 )
 rm(u_tmp)
 R_MC_Int_2_wtAntit <- sapply(
@@ -212,16 +228,16 @@ names(R_MC_Int_2_wtAntit) <- paste0("R_MC_Int_2_wtAntit", "_e", total_fct_evals)
 u_tmp <- rmvnorm_rebuilt(n = MC_variants_antith_max, mean = u_bv_BLUP, sigma = V.u_V_inv_V.e)
 # apply to original and antithet. variable (i.e. u and -u)
 sgl_MC_values_tmp <- sapply(c(1, -1),
-  # s = -1
-  function(s) {
-    if (s == (-1)) {
-      u_tmp <- t(apply(u_tmp, 1, function(x) {
-        2 * u_bv_BLUP - x
-      }))
-    }
-    apply(u_tmp, 1, f_to_eval_for_f_u_given_y)
-  },
-  simplify = "array"
+                            # s = -1
+                            function(s) {
+                              if (s == (-1)) {
+                                u_tmp <- t(apply(u_tmp, 1, function(x) {
+                                  2 * u_bv_BLUP - x
+                                }))
+                              }
+                              apply(u_tmp, 1, f_to_eval_for_f_u_given_y)
+                            },
+                            simplify = "array"
 )
 R_MC_Int_2 <- sapply(
   MC_variants_antith,
