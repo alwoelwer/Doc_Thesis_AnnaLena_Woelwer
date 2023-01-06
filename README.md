@@ -1,8 +1,9 @@
 # Code examples for doctoral thesis of Anna-Lena Wölwer (submitted and defended 2022)
-This project contains code for chosen parts of the doctoral thesis titled "Model-Based Prediction and Estimation Using Incomplete Survey Data", submitted in partial fulfillment of the requirements for the degree Dr. rer. pol. to the Faculty IV at Trier University by Anna-Lena Wölwer. The thesis is freely available for download under the link:
+This project contains code for chosen parts of the doctoral thesis titled "Model-Based Prediction and Estimation Using Incomplete Survey Data", submitted in partial fulfillment of the requirements for the degree Doctor rerum politicarum (Dr. rer. pol.) to the Faculty IV at Trier University by Anna-Lena Wölwer. The thesis is freely available for download under the link:
 ```diff
 - Add link to Opus
 ```
+
 The repository is under construction.
 
 # Structure
