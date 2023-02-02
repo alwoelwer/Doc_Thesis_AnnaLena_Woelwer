@@ -2,7 +2,7 @@
 
 **--under construction--**
 
-This project contains code for chosen parts of the doctoral thesis titled "Model-Based Prediction and Estimation Using Incomplete Survey Data", submitted in partial fulfillment of the requirements for the degree Doctor rerum politicarum (Dr. rer. pol.) to the Faculty IV at Trier University by Anna-Lena Wölwer. The thesis is freely available for download under the following [link to doctoral thesis](https://doi.org/10.25353/ubtr-xxxx-25a6-5f2c).
+This project contains code for chosen parts of the doctoral thesis titled *Model-Based Prediction and Estimation Using Incomplete Survey Data*, submitted in partial fulfillment of the requirements for the degree *Doctor rerum politicarum* (Dr. rer. pol.) to the Faculty IV at Trier University by Anna-Lena Wölwer. The thesis is freely available for download under the following [link to doctoral thesis](https://doi.org/10.25353/ubtr-xxxx-25a6-5f2c).
 
 # Structure
 
