@@ -4,11 +4,11 @@
 cff-version: 1.2.0
 title: code_phd_annalena_woelwer
 message: >-
-  Code and examples for selected parts of the PhD
-  thesis "Model-Based Prediction and Estimation Using
-  Incomplete Survey Data" by Anna-Lena Wölwer. If you
-  use this code, please cite the corresponding PhD
-  thesis using the metadata from this file.
+  Code and examples for selected parts of the PhD thesis
+  "Model-Based Prediction and Estimation Using Incomplete
+  Survey Data" by Anna-Lena Wölwer. If you use this code,
+  please cite the corresponding PhD thesis using the
+  metadata from this file.
 type: software
 authors:
   - given-names: Anna-Lena
@@ -17,10 +17,11 @@ authors:
     orcid: 'https://orcid.org/0000-0002-1662-4040'
 identifiers:
   - type: url
-    value: 'https://doi.org/10.1007/s10182-021-00426-4'
-    description: 'Exchange for: The URL of the PhD thesis. '
+    value: 'https://doi.org/10.25353/ubtr-xxxx-25a6-5f2c'
+    description: DOI of the PhD thesis
 keywords:
   - small area estimation
   - multivariate modeling
   - missing data
   - survey estimation
+  - employment statistics
