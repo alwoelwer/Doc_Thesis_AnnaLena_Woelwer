@@ -10,10 +10,10 @@ The doctoral thesis was submitted in June 2022, defended in December 2022 and pu
 
 ### Empirical Best Prediction in Multivariate Fay-Herriot Models (Chapter 5)
 
--   XXXX: Example
+-   XXXX: Under construction
 
 ### Multivariate Fay-Herriot Models under Missing Direct Estimates (Chapter 6)
 
--   XXXX: Code for generating random data according to a multivariate Fay-Herriot model without and with randomly missing direct estimates
--   XXXX: Code for fitting a multivariate Fay-Herriot model under missing direct estimates. For fitting, we use a Fisher-Scoring algorithm
--   XXXX: Shows an example of data generation and the application of algorithm XXXX
+-   *MMFH_example.qmd*: Shows a commented example of generating data according to a MMFH model (using *MMFH_gen_dat_m3.R*) and estimating its parameters using algorithm *MMFH_fitting.R*. The presented example can be used as the basis for a model-based Monte Carlo simulation study similar to the ones shown in Chapter 6.
+-   *MMFH_gen_dat_m3*: Code for generating the different data parts used in model-based Monte Carlo simulation studies of multivariate Fay-Herriot Models without and with randomly missing direct estimates. The code is written for 3 dependent variables.
+-   *MMFH_fitting.R*: Code for fitting a multivariate Fay-Herriot model under missing direct estimates (MMFH). For fitting, we use a Fisher-Scoring algorithm, either with ML or REML.
